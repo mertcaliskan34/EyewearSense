@@ -37,14 +37,15 @@ cd EyewearSense
 
 #### 2. Create a virtual environment and activate it:
 python3 -m venv venv
-source venv/bin/activate   # Linux/macOS
-venv\\Scripts\\activate  # Windows
+source venv/bin/activate -> Linux/macOS
+venv\\Scripts\\activate -> Windows
 
 #### 3. Install dependencies:
 pip install -r requirements.txt
 
 #### 4. Download YOLOv8 face weights and Haar Cascade file:
-# example commands
+
+##### Example commands
 wget -P models/ https://.../yolov8_face.pt
 wget -P models/ https://.../haarcascade_frontalface_default.xml
 
