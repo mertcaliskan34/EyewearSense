@@ -1,58 +1,79 @@
-# 🕶️ EyewearSense  
-**Eyeglass Detection in Images Using Python and Computer Vision**
+# 🕶️ EyewearSense
+**Glasses Wearing Detection with YOLOv8, Haar Cascade & CNN**
 
-EyewearSense is a Python-based project that detects whether a person is wearing eyeglasses in static images. It uses image processing and machine learning techniques to classify faces as "with glasses" or "without glasses".
-
-## 🚀 Features
-
-- Detects eyeglasses in static images  
-- Face detection using OpenCV or Dlib  
-- Feature extraction and classification with machine learning (e.g., SVM, CNN)  
-- Simple interface to test images  
-- Lightweight and easy to run locally  
+A Python-based computer vision project for detecting eyeglasses on faces in static images using a hybrid approach: YOLOv8 for face localization, Haar Cascade for facial feature refinement, and a CNN classifier for final eyewear detection.
 
 ---
 
-## ⚙️ Technologies Used
+## 📋 Project Description
 
-- Python 3.x  
-- OpenCV  
-- scikit-learn / TensorFlow  
-- NumPy, Pandas  
-- Matplotlib
-
----
-
-## 📌 Roadmap
-
-### ✅ Phase 1: Setup and Preparation
-- [x] Set up Python environment  
-- [x] Install required packages (`requirements.txt`)  
-- [x] Collect a dataset of faces with/without glasses
-
-### 🚧 Phase 2: Image Preprocessing
-- [ ] Face detection (Haar Cascade / Dlib)  
-- [ ] Crop and resize face images  
-- [ ] Normalize and label the data
-
-### 🚧 Phase 3: Model Development
-- [ ] Train a simple classifier (e.g., SVM, Logistic Regression)  
-- [ ] Evaluate performance  
-- [ ] Try CNN-based model (optional)
-
-### 🚧 Phase 4: Inference & Testing
-- [ ] Build a test interface for single image input  
-- [ ] Display prediction and confidence  
-- [ ] Evaluate metrics like accuracy, precision, recall
-
-### 🛠️ Phase 5: Optimization & Extras
-- [ ] Fine-tune for better performance  
-- [ ] Analyze false positives/negatives  
-- [ ] (Optional) Add a basic GUI interface
+- **Objective**: Build an application that accurately identifies whether a person in a static image is wearing eyeglasses.
+- **Methods**:
+  - **YOLOv8**: Real-time face detection and bounding box generation.
+  - **Haar Cascade**: Refine face ROI and detect facial landmarks.
+  - **CNN**: Classify the cropped facial region as "with glasses" or "without glasses".
+- **Applications**:
+  - Identity verification systems
+  - Security and surveillance
+  - Vision assessment in healthcare
 
 ---
 
-## 📸 Sample Use
+## 📂 Repository Structure
 
-```bash
-python main.py --image path/to/image.jpg
+```plaintext
+EyewearSense/
+├── data/
+│   ├── raw/                 # Unprocessed images
+│   ├── processed/           # Cropped face ROIs
+│   ├── train/               # Training set
+│   └── test/                # Test set
+├── models/
+│   ├── yolov8_face.pt       # Pretrained YOLOv8 face detector
+│   ├── haar_cascade.xml     # Haar Cascade classifier file
+│   └── cnn_glasses.pth      # Trained CNN model
+├── notebooks/               # Jupyter notebooks for experiments
+├── src/
+│   ├── setup.py             # Environment & dependency setup
+│   ├── preprocessing.py     # Image preprocessing pipeline
+│   ├── detect_face.py       # YOLOv8-based face detection
+│   ├── refine_roi.py        # Haar Cascade ROI refinement
+│   ├── train_cnn.py         # CNN training script
+│   ├── evaluate.py          # Model evaluation metrics
+│   └── predict.py           # Inference script for single images
+├── README.md                # Project overview (this file)
+├── ROADMAP.md               # Project roadmap and milestones
+├── requirements.txt         # Python dependencies
+└── main.py                  # CLI entry point
+
+---
+
+## 🚀 Key Features
+
+1. **Robust Face Detection**: Leverages YOLOv8 for high-accuracy face localization.
+2. **ROI Refinement**: Uses Haar Cascade to refine facial region and improve CNN performance.
+3. **Deep Learning Classification**: Custom CNN distinguishes between "glasses" and "no glasses".
+4. **Modular Pipeline**: Clear separation of detection, preprocessing, training, and inference.
+5. **Performance Metrics**: Built-in evaluation of accuracy, precision, recall, and F1-score.
+
+---
+
+## 🛠️ Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/username/EyewearSense.git
+   cd EyewearSense
+
+2. Create a virtual environment and activate it:
+python3 -m venv venv
+source venv/bin/activate   # Linux/macOS
+venv\\Scripts\\activate  # Windows
+
+3. Install dependencies:
+pip install -r requirements.txt
+
+4. Download YOLOv8 face weights and Haar Cascade file:
+# example commands
+wget -P models/ https://.../yolov8_face.pt
+wget -P models/ https://.../haarcascade_frontalface_default.xml
