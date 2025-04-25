@@ -19,34 +19,6 @@ A Python-based computer vision project for detecting eyeglasses on faces in stat
 
 ---
 
-## 📂 Repository Structure
-
-EyewearSense/
-├── data/
-│   ├── raw/                 # Unprocessed images
-│   ├── processed/           # Cropped face ROIs
-│   ├── train/               # Training set
-│   └── test/                # Test set
-├── models/
-│   ├── yolov8_face.pt       # Pretrained YOLOv8 face detector
-│   ├── haar_cascade.xml     # Haar Cascade classifier file
-│   └── cnn_glasses.pth      # Trained CNN model
-├── notebooks/               # Jupyter notebooks for experiments
-├── src/
-│   ├── setup.py             # Environment & dependency setup
-│   ├── preprocessing.py     # Image preprocessing pipeline
-│   ├── detect_face.py       # YOLOv8-based face detection
-│   ├── refine_roi.py        # Haar Cascade ROI refinement
-│   ├── train_cnn.py         # CNN training script
-│   ├── evaluate.py          # Model evaluation metrics
-│   └── predict.py           # Inference script for single images
-├── README.md                # Project overview (this file)
-├── ROADMAP.md               # Project roadmap and milestones
-├── requirements.txt         # Python dependencies
-└── main.py                  # CLI entry point
-
----
-
 ## 🚀 Key Features
 
 1. **Robust Face Detection**: Leverages YOLOv8 for high-accuracy face localization.
