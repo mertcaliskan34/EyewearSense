@@ -32,7 +32,7 @@ A Python-based computer vision project for detecting eyeglasses on faces in stat
 ## 🛠️ Installation
 
 #### 1. Clone the repository:
-git clone https://github.com/username/EyewearSense.git
+git clone https://github.com/mertcaliskan34/EyewearSense.git
 cd EyewearSense
 
 #### 2. Create a virtual environment and activate it:
