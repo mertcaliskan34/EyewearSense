@@ -1,4 +1,4 @@
-## 📅 ROADMAP for EyewearSense
+# 📅 ROADMAP for EyewearSense
 
 ### Phase 1: Setup & Data
 - Create Python venv, install dependencies
