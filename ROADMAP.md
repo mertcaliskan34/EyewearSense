@@ -1,6 +1,3 @@
-# ROADMAP.md
-
-```markdown
 # 📅 ROADMAP for EyewearSense
 
 A structured timeline with major milestones to guide the development of the EyewearSense project.
