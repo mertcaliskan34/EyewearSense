@@ -59,14 +59,50 @@ EyewearSense/
 
 ## 🛠️ Installation
 
-1. Clone the repository:
+#### 1. Clone the repository:
 git clone https://github.com/username/EyewearSense.git
 cd EyewearSense
 
-2. Create a virtual environment and activate it:
+#### 2. Create a virtual environment and activate it:
 python3 -m venv venv
 source venv/bin/activate   # Linux/macOS
 venv\\Scripts\\activate  # Windows
 
-3. Install dependencies:
+#### 3. Install dependencies:
 pip install -r requirements.txt
+
+#### 4. Download YOLOv8 face weights and Haar Cascade file:
+# example commands
+wget -P models/ https://.../yolov8_face.pt
+wget -P models/ https://.../haarcascade_frontalface_default.xml
+
+## 🎯 Usage
+
+### Training the CNN Classifier
+python src/train_cnn.py \
+  --data-dir data/processed \
+  --epochs 20 \
+  --batch-size 32 \
+  --output models/cnn_glasses.pth
+
+## Running Inference
+python src/predict.py \
+  --image path/to/image.jpg \
+  --yolo-weights models/yolov8_face.pt \
+  --haar-cascade models/haar_cascade.xml \
+  --cnn-model models/cnn_glasses.pth
+
+## 📊 Evaluation
+
+### After training, evaluate your model:
+python src/evaluate.py \
+  --test-dir data/test \
+  --yolo-weights models/yolov8_face.pt \
+  --haar-cascade models/haar_cascade.xml \
+  --cnn-model models/cnn_glasses.pth
+
+### Metrics reported:
+Accuracy
+Precision
+Recall
+F1-score
