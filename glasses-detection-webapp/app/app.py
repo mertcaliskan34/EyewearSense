@@ -1,6 +1,5 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, jsonify
 import os
-import tempfile
 import tensorflow as tf
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
 
@@ -12,36 +11,59 @@ model = tf.keras.models.load_model(model_path)
 if not os.path.exists(model_path):
     raise FileNotFoundError(f"Model dosyası bulunamadı: {model_path}")
 model = tf.keras.models.load_model(model_path)
-@app.route('/')
-def index():
-    return render_template('index.html', result=None)
-
 @app.route('/predict', methods=['POST'])
 def predict():
     if 'image' not in request.files:
-        return "No file part", 400  # Dosya yüklenmediyse hata döndür
+        return "No file part", 400
     file = request.files['image']
     if file.filename == '':
-        return "No selected file", 400  # Dosya seçilmediyse hata döndür
+        return "No selected file", 400
     if file:
-        # Geçici bir dosya oluştur
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".jpg") as temp_file:
-            file_path = temp_file.name
-            file.save(file_path)
+        # Save the uploaded image to static folder for display
+        upload_folder = os.path.join(app.static_folder, 'uploads')
+        if not os.path.exists(upload_folder):
+            os.makedirs(upload_folder)
+            
+        filename = 'last_upload.jpg'
+        file_path = os.path.join(upload_folder, filename)
+        file.save(file_path)
 
-        # Resmi yükle ve modele uygun hale getir
-        img = load_img(file_path, target_size=(128, 128))  # Modelin giriş boyutuna göre ayarla
-        img_array = img_to_array(img) / 255.0  # Normalizasyon
-        img_array = img_array.reshape((1, 128, 128, 3))  # Modelin beklediği şekle getir
+        # Process image for prediction
+        img = load_img(file_path, target_size=(128, 128))
+        img_array = img_to_array(img) / 255.0
+        img_array = img_array.reshape((1, 128, 128, 3))
 
-        # Model tahmini
+        # Model prediction
         prediction = model.predict(img_array)
         result = "Gözlük VAR" if prediction[0][0] < 0.5 else "Gözlük YOK"
 
-        # Geçici dosyayı sil
-        os.remove(file_path)
+        return render_template('index.html', 
+                             result=result, 
+                             result_image=f'uploads/{filename}')
 
-        return render_template('index.html', result=result)
+@app.route('/')
+def index():
+    # Clear any existing uploads when starting fresh
+    upload_folder = os.path.join(app.static_folder, 'uploads')
+    if os.path.exists(upload_folder):
+        for file in os.listdir(upload_folder):
+            os.remove(os.path.join(upload_folder, file))
+    return render_template('index.html', result=None)
+
+@app.route('/clear_image', methods=['POST'])
+def clear_image():
+    try:
+        upload_folder = os.path.join(app.static_folder, 'uploads')
+        if os.path.exists(upload_folder):
+            for file in os.listdir(upload_folder):
+                file_path = os.path.join(upload_folder, file)
+                if os.path.isfile(file_path):
+                    os.remove(file_path)
+                    print(f"Successfully deleted {file_path}")
+        return jsonify({'status': 'success'}), 200
+    except Exception as e:
+        print(f"Error: {str(e)}")
+        return jsonify({'status': 'error', 'message': str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5001)  # or any other port number

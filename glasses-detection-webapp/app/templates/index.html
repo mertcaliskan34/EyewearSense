@@ -4,19 +4,124 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <title>Glasses Detection</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Glasses Detection App</title>
 </head>
 <body>
-    <div class="container">
-        <h1>Glasses Detection</h1>
-        <form action="/predict" method="post" enctype="multipart/form-data">
-            <input type="file" name="image" accept="image/*" required>
-            <button type="submit">Upload Image</button>
-        </form>
+    <nav class="navbar">
+        <div class="nav-content">
+            <h1><i class="fas fa-glasses"></i> Glasses Detection</h1>
+        </div>
+    </nav>
+    
+    <main class="container">
+        <div class="upload-section">
+            <form action="/predict" method="post" enctype="multipart/form-data">
+                <div class="file-upload">
+                    <label for="image-upload" class="upload-label">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <span>Choose an image</span>
+                        <div id="upload-success" class="upload-success hidden">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Image loaded successfully!</span>
+                        </div>
+                    </label>
+                    <input id="image-upload" type="file" name="image" accept="image/*" required>
+                    <div id="image-preview" class="image-preview {% if not result %}hidden{% endif %}">
+                        <button type="button" id="clear-image" class="clear-image-btn">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                        <img id="preview-img" src="{% if result %}{{ url_for('static', filename=result_image) }}{% endif %}" alt="Preview">
+                    </div>
+                </div>
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-search"></i> Detect Glasses
+                </button>
+            </form>
+        </div>
+
         {% if result is not none %}
-            <h2>Result: {{ result }}</h2>
-            <img src="{{ url_for('static', filename=result_image) }}" alt="Uploaded Image">
+        <div class="result-section">
+            <div class="result-card">
+                <h2>Detection Result</h2>
+                <p class="result-text">{{ result }}</p>
+                <div class="image-container">
+                    <img src="{{ url_for('static', filename=result_image) }}" alt="Analyzed Image">
+                </div>
+            </div>
+        </div>
         {% endif %}
-    </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Glasses Detection App. All rights reserved.</p>
+    </footer>
+    <script>
+        document.getElementById('image-upload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                // Show preview
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('preview-img').src = e.target.result;
+                    document.getElementById('image-preview').classList.remove('hidden');
+                    
+                    // Show success message with animation
+                    const successElement = document.getElementById('upload-success');
+                    successElement.classList.remove('hidden');
+                    successElement.classList.add('fade-in');
+                    
+                    // Hide success message after 3 seconds
+                    setTimeout(() => {
+                        successElement.classList.add('fade-out');
+                        setTimeout(() => {
+                            successElement.classList.add('hidden');
+                            successElement.classList.remove('fade-out');
+                        }, 500);
+                    }, 3000);
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Prevent form submission from clearing the preview if there's an error
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const fileInput = document.getElementById('image-upload');
+            if (!fileInput.files || !fileInput.files[0]) {
+                e.preventDefault();
+                alert('Please select an image first.');
+            }
+        });
+
+        // Update clear image functionality
+        document.getElementById('clear-image').addEventListener('click', function() {
+            fetch('/clear_image', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Cache-Control': 'no-cache'
+                },
+                credentials: 'same-origin'
+            }).then(response => {
+                if (response.ok) {
+                    // Clear the file input
+                    document.getElementById('image-upload').value = '';
+                    // Hide the preview
+                    document.getElementById('image-preview').classList.add('hidden');
+                    // Remove the result section if it exists
+                    const resultSection = document.querySelector('.result-section');
+                    if (resultSection) {
+                        resultSection.remove();
+                    }
+                    // Force page reload without cache
+                    window.location.href = window.location.href.split('?')[0] + '?nocache=' + new Date().getTime();
+                } else {
+                    console.error('Failed to delete image');
+                }
+            }).catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
 </body>
 </html>
