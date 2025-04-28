@@ -6,11 +6,17 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <title>Glasses Detection App</title>
+    <meta name="description" content="Upload an image to detect if glasses are present in the photo.">
+    <!-- Add theme color for browser UI in mobile devices -->
+    <meta name="theme-color" content="#2c3e50">
 </head>
 <body>
     <nav class="navbar">
         <div class="nav-content">
             <h1><i class="fas fa-glasses"></i> Glasses Detection</h1>
+            <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+                <i class="fas fa-moon"></i>
+            </button>
         </div>
     </nav>
     
@@ -44,7 +50,7 @@
         <div class="result-section">
             <div class="result-card">
                 <h2>Detection Result</h2>
-                <p class="result-text">{{ result }}</p>
+                <p class="result-text {% if 'Not Detected' in result %}glasses-not-detected{% else %}glasses-detected{% endif %}">{{ result }}</p>
                 <div class="image-container">
                     <img src="{{ url_for('static', filename=result_image) }}" alt="Analyzed Image">
                 </div>
@@ -54,9 +60,47 @@
     </main>
 
     <footer>
-        <p>&copy; 2024 Glasses Detection App. All rights reserved.</p>
+        <p>&copy; 2024 Eyewear Glasses Detection App. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="https://github.com/mertcaliskan34/EyewearSense" aria-label="GitHub repository">
+                <i class="fab fa-github"></i>
+            </a>
+        </div>
     </footer>
     <script>
+        // Dark mode toggle functionality
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+        const icon = themeToggle.querySelector('i');
+        
+        // Check for saved theme preference or use preferred color scheme
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            body.classList.add('dark-mode');
+            icon.classList.replace('fa-moon', 'fa-sun');
+        }
+        
+        // Toggle theme when button is clicked
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            
+            // Update icon
+            if (body.classList.contains('dark-mode')) {
+                icon.classList.replace('fa-moon', 'fa-sun');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                icon.classList.replace('fa-sun', 'fa-moon');
+                localStorage.setItem('theme', 'light');
+            }
+            
+            // Add pulse animation to submit button
+            const submitBtn = document.querySelector('.submit-btn');
+            submitBtn.style.animation = 'pulse 0.5s';
+            setTimeout(() => {
+                submitBtn.style.animation = '';
+            }, 500);
+        });
+        
         document.getElementById('image-upload').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
@@ -90,6 +134,18 @@
             if (!fileInput.files || !fileInput.files[0]) {
                 e.preventDefault();
                 alert('Please select an image first.');
+            } else {
+                // Add loading state to button when form is submitted
+                const submitBtn = this.querySelector('.submit-btn');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+                
+                // Reset button after 3 seconds if the form hasn't redirected yet
+                setTimeout(() => {
+                    if (document.body.contains(submitBtn)) {
+                        submitBtn.innerHTML = originalText;
+                    }
+                }, 3000);
             }
         });
 
@@ -138,11 +194,8 @@
                 });
             }, 300); // Match animation duration from CSS
         });
-
-        // Remove the redundant deleteButton event listener as it duplicates functionality
-        // and the element with id 'deleteButton' doesn't appear in the HTML
-
-        // No additional event listeners needed - clear-image button handles all image removal functionality
     </script>
+    <!-- Include gallery script for recently analyzed images -->
+    <script src="{{ url_for('static', filename='gallery.js') }}"></script>
 </body>
 </html>
