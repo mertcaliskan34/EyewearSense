@@ -93,35 +93,56 @@
             }
         });
 
-        // Update clear image functionality
+        // Update clear image functionality with smooth animation
         document.getElementById('clear-image').addEventListener('click', function() {
-            fetch('/clear_image', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Cache-Control': 'no-cache'
-                },
-                credentials: 'same-origin'
-            }).then(response => {
-                if (response.ok) {
-                    // Clear the file input
-                    document.getElementById('image-upload').value = '';
-                    // Hide the preview
-                    document.getElementById('image-preview').classList.add('hidden');
-                    // Remove the result section if it exists
-                    const resultSection = document.querySelector('.result-section');
-                    if (resultSection) {
-                        resultSection.remove();
+            // Add fade-out animation
+            const imagePreview = document.getElementById('image-preview');
+            imagePreview.classList.add('fade-out');
+            
+            // Wait for animation to complete before hiding
+            setTimeout(() => {
+                // Now make the API call to clear the image on the server
+                fetch('/clear_image', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Cache-Control': 'no-cache'
+                    },
+                    credentials: 'same-origin'
+                }).then(response => {
+                    if (response.ok) {
+                        // Clear the file input
+                        document.getElementById('image-upload').value = '';
+                        // Hide the preview
+                        imagePreview.classList.add('hidden');
+                        imagePreview.classList.remove('fade-out'); // Reset for next time
+                        // Reset the preview image source
+                        document.getElementById('preview-img').src = '';
+                        // Remove the result section if it exists
+                        const resultSection = document.querySelector('.result-section');
+                        if (resultSection) {
+                            resultSection.classList.add('fade-out');
+                            setTimeout(() => {
+                                resultSection.remove();
+                            }, 300); // Match animation duration
+                        }
+                    } else {
+                        console.error('Failed to delete image');
+                        // Revert animation if failed
+                        imagePreview.classList.remove('fade-out');
                     }
-                    // Force page reload without cache
-                    window.location.href = window.location.href.split('?')[0] + '?nocache=' + new Date().getTime();
-                } else {
-                    console.error('Failed to delete image');
-                }
-            }).catch(error => {
-                console.error('Error:', error);
-            });
+                }).catch(error => {
+                    console.error('Error:', error);
+                    // Revert animation if error
+                    imagePreview.classList.remove('fade-out');
+                });
+            }, 300); // Match animation duration from CSS
         });
+
+        // Remove the redundant deleteButton event listener as it duplicates functionality
+        // and the element with id 'deleteButton' doesn't appear in the HTML
+
+        // No additional event listeners needed - clear-image button handles all image removal functionality
     </script>
 </body>
 </html>

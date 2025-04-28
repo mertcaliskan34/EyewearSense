@@ -105,6 +105,7 @@ input[type="file"] {
 /* Result section */
 .result-section {
     margin-top: 2rem;
+    transition: all 0.3s ease;
 }
 
 .result-card {
@@ -112,6 +113,7 @@ input[type="file"] {
     padding: 2rem;
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
 }
 
 .result-card h2 {
@@ -228,12 +230,27 @@ footer {
     }
 }
 
+/* Additional animation for elements that don't use translate */
+@keyframes simpleFadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
 .fade-in {
     animation: fadeIn 0.3s ease forwards;
 }
 
 .fade-out {
     animation: fadeOut 0.3s ease forwards;
+}
+
+.image-preview.fade-out,
+.result-section.fade-out {
+    animation: simpleFadeOut 0.3s ease forwards;
 }
 
 /* Make upload section relative for absolute positioning of success message */

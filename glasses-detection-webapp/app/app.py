@@ -1,5 +1,6 @@
 from flask import Flask, request, render_template, jsonify
 import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 import tensorflow as tf
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
 
@@ -7,10 +8,10 @@ app = Flask(__name__)
 
 # Modeli yükle
 model_path = os.path.join(os.path.dirname(__file__), 'model/glasses_cnn_model.h5')
-model = tf.keras.models.load_model(model_path)
 if not os.path.exists(model_path):
     raise FileNotFoundError(f"Model dosyası bulunamadı: {model_path}")
 model = tf.keras.models.load_model(model_path)
+
 @app.route('/predict', methods=['POST'])
 def predict():
     if 'image' not in request.files:
@@ -35,7 +36,7 @@ def predict():
 
         # Model prediction
         prediction = model.predict(img_array)
-        result = "Gözlük VAR" if prediction[0][0] < 0.5 else "Gözlük YOK"
+        result = "Glasses Detected" if prediction[0][0] < 0.5 else "Glasses Not Detected"
 
         return render_template('index.html', 
                              result=result, 
@@ -60,7 +61,12 @@ def clear_image():
                 if os.path.isfile(file_path):
                     os.remove(file_path)
                     print(f"Successfully deleted {file_path}")
-        return jsonify({'status': 'success'}), 200
+        # Cache kontrolü için ek header
+        response = jsonify({'status': 'success'})
+        response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+        response.headers['Pragma'] = 'no-cache'
+        response.headers['Expires'] = '0'
+        return response, 200
     except Exception as e:
         print(f"Error: {str(e)}")
         return jsonify({'status': 'error', 'message': str(e)}), 500
