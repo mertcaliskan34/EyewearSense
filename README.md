@@ -1,4 +1,4 @@
-# Gözlük Tespit Web Uygulaması
+# EyewearSense Gözlük Tespit Web Uygulaması
 
 Bu proje, yüklenen bir görüntüde kişinin gözlük takıp takmadığını tespit etmek için eğitilmiş bir evrişimli sinir ağı (CNN) modeli kullanan bir web uygulamasıdır. Uygulama Flask kullanılarak geliştirilmiş olup, görüntü yüklemeleri ve sonuçların gösterimi için kullanıcı dostu bir arayüz sunmaktadır.
 
