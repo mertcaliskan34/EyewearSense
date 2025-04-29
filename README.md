@@ -56,6 +56,7 @@ Proje, önceden eğitilmiş bir CNN modeli içermektedir. Kendi veri setinizle m
 
 1. Veri setinizi hazırlayın (gözlüklü ve gözlüksüz kişilerin görüntüleri).
 2. `train.py` betiğini çalıştırın:
+
    ```
    python train.py
    ```
