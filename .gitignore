@@ -4,5 +4,5 @@ test.py
 test2.py
 eyewear_env
 img_align_celeba
-uploads
+glasses-detection-webapp/app/static/uploads
 __pycache__
