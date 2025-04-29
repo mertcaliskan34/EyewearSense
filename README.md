@@ -6,24 +6,6 @@ Bu proje, yüklenen bir görüntüde kişinin gözlük takıp takmadığını te
 
 Görüntü işleme teknikleri ve derin öğrenme modellerinin pratik bir uygulaması olan bu proje, kişilerin gözlük takıp takmadığını otomatik olarak tespit edebilmektedir. Eğitilmiş CNN modeli, yüklenen görüntüleri analiz ederek yüksek doğrulukla sonuç üretmektedir.
 
-## Proje Yapısı
-
-```
-gözlük-tespit-uygulaması
-├── app
-│   ├── static
-│   │   ├── gallery.js         # Galeri işlevselliği için JavaScript dosyası
-│   │   └── styles.css         # Web uygulaması için CSS stilleri
-│   ├── templates
-│   │   └── index.html         # Web uygulaması için HTML yapısı
-│   ├── app.py                 # Ana uygulama dosyası
-│   └── model
-│       └── glasses_cnn_model.h5 # Eğitilmiş model dosyası
-├── Train.py                   # Model eğitimi için Python betiği
-├── requirements.txt           # Proje bağımlılıkları
-└── README.md                  # Proje dokümantasyonu
-```
-
 ## Gereksinimler
 
 Bu uygulamayı çalıştırmak için aşağıdaki bağımlılıkların yüklü olması gerekmektedir:
@@ -40,7 +22,7 @@ Bu uygulamayı çalıştırmak için aşağıdaki bağımlılıkların yüklü o
 1. Depoyu klonlayın:
    ```
    git clone <depo-url>
-   cd gözlük-tespit-uygulaması
+   cd glasses-detection-webapp
    ```
 
 2. Gerekli paketleri yükleyin:
@@ -75,11 +57,8 @@ Proje, önceden eğitilmiş bir CNN modeli içermektedir. Kendi veri setinizle m
 1. Veri setinizi hazırlayın (gözlüklü ve gözlüksüz kişilerin görüntüleri).
 2. `train.py` betiğini çalıştırın:
    ```
-   python Train.py
+   python train.py
    ```
-## Lisans
-
-Bu proje MIT Lisansı altında lisanslanmıştır. Detaylar için `LICENSE` dosyasına bakınız.
 
 ## İletişim
 
