@@ -1,95 +1,86 @@
-# 🕶️ EyewearSense
+# Gözlük Tespit Web Uygulaması
 
-**Glasses Wearing Detection with YOLOv8, Haar Cascade & CNN**
+Bu proje, yüklenen bir görüntüde kişinin gözlük takıp takmadığını tespit etmek için eğitilmiş bir evrişimli sinir ağı (CNN) modeli kullanan bir web uygulamasıdır. Uygulama Flask kullanılarak geliştirilmiş olup, görüntü yüklemeleri ve sonuçların gösterimi için kullanıcı dostu bir arayüz sunmaktadır.
 
-A Python-based computer vision project for detecting eyeglasses on faces in static images using a hybrid approach: YOLOv8 for face localization, Haar Cascade for facial feature refinement, and a CNN classifier for final eyewear detection.
+## Proje Hakkında
 
----
+Görüntü işleme teknikleri ve derin öğrenme modellerinin pratik bir uygulaması olan bu proje, kişilerin gözlük takıp takmadığını otomatik olarak tespit edebilmektedir. Eğitilmiş CNN modeli, yüklenen görüntüleri analiz ederek yüksek doğrulukla sonuç üretmektedir.
 
-## 📋 Project Description
+## Proje Yapısı
 
-- **Objective**: Build an application that accurately identifies whether a person in a static image is wearing eyeglasses.
-- **Methods**:
-  - **YOLOv8**: Real-time face detection and bounding box generation.
-  - **Haar Cascade**: Refine face ROI and detect facial landmarks.
-  - **CNN**: Classify the cropped facial region as "with glasses" or "without glasses".
-- **Applications**:
-  - Identity verification systems
-  - Security and surveillance
-  - Vision assessment in healthcare
-
----
-
-## 🚀 Key Features
-
-1. **Robust Face Detection**: Leverages YOLOv8 for high-accuracy face localization.
-2. **ROI Refinement**: Uses Haar Cascade to refine facial region and improve CNN performance.
-3. **Deep Learning Classification**: Custom CNN distinguishes between "glasses" and "no glasses".
-4. **Modular Pipeline**: Clear separation of detection, preprocessing, training, and inference.
-5. **Performance Metrics**: Built-in evaluation of accuracy, precision, recall, and F1-score.
-
----
-
-## 🛠️ Installation
-
-#### 1. Clone the repository:
 ```
-git clone https://github.com/mertcaliskan34/EyewearSense.git
-cd EyewearSense
+gözlük-tespit-uygulaması
+├── app
+│   ├── static
+│   │   ├── gallery.js         # Galeri işlevselliği için JavaScript dosyası
+│   │   └── styles.css         # Web uygulaması için CSS stilleri
+│   ├── templates
+│   │   └── index.html         # Web uygulaması için HTML yapısı
+│   ├── app.py                 # Ana uygulama dosyası
+│   └── model
+│       └── glasses_cnn_model.h5 # Eğitilmiş model dosyası
+├── Train.py                   # Model eğitimi için Python betiği
+├── requirements.txt           # Proje bağımlılıkları
+└── README.md                  # Proje dokümantasyonu
 ```
 
-#### 2. Create a virtual environment and activate it:
-```
-python3 -m venv venv
-source venv/bin/activate  # Linux/macOS
-venv\Scripts\activate     # Windows
-```
+## Gereksinimler
 
-#### 3. Install dependencies:
-```
-pip install -r requirements.txt
-```
+Bu uygulamayı çalıştırmak için aşağıdaki bağımlılıkların yüklü olması gerekmektedir:
 
-#### 4. Download YOLOv8 face weights and Haar Cascade file:
-##### Example commands
-```
-wget -P models/ https://.../yolov8_face.pt
-wget -P models/ https://.../haarcascade_frontalface_default.xml
-```
+- Python 3.6 veya üzeri
+- Flask
+- TensorFlow
+- NumPy
+- OpenCV
+- `requirements.txt` dosyasında listelenen diğer gerekli kütüphaneler
 
-## 🎯 Usage
+## Kurulum
 
-### Training the CNN Classifier
-```
-python src/train_cnn.py \
-  --data-dir data/processed \
-  --epochs 20 \
-  --batch-size 32 \
-  --output models/cnn_glasses.pth
-```
+1. Depoyu klonlayın:
+   ```
+   git clone <depo-url>
+   cd gözlük-tespit-uygulaması
+   ```
 
-### Running Inference
-```
-python src/predict.py \
-  --image path/to/image.jpg \
-  --yolo-weights models/yolov8_face.pt \
-  --haar-cascade models/haar_cascade.xml \
-  --cnn-model models/cnn_glasses.pth
-```
+2. Gerekli paketleri yükleyin:
+   ```
+   pip install -r requirements.txt
+   ```
 
-## 📊 Evaluation
+## Uygulamayı Çalıştırma
 
-### After training, evaluate your model:
-```
-python src/evaluate.py \
-  --test-dir data/test \
-  --yolo-weights models/yolov8_face.pt \
-  --haar-cascade models/haar_cascade.xml \
-  --cnn-model models/cnn_glasses.pth
-```
+1. `app` dizinine gidin:
+   ```
+   cd app
+   ```
 
-### Metrics reported:
-- Accuracy
-- Precision
-- Recall
-- F1-score
+2. Uygulamayı çalıştırın:
+   ```
+   python app.py
+   ```
+
+3. Web tarayıcınızı açın ve uygulamaya erişmek için `http://127.0.0.1:5001` adresine gidin.
+
+## Kullanım
+
+- Ana sayfadaki form aracılığıyla bir görüntü yükleyin.
+- Uygulama görüntüyü işleyecek ve gözlük tespit edilip edilmediğini gösterecektir.
+- Sonuçlar, görüntünün işlenmesinden sonra kullanıcı dostu bir arayüzle sunulacaktır.
+
+## Model Eğitimi
+
+Proje, önceden eğitilmiş bir CNN modeli içermektedir. Kendi veri setinizle modeli yeniden eğitmek isterseniz:
+
+1. Veri setinizi hazırlayın (gözlüklü ve gözlüksüz kişilerin görüntüleri).
+2. `Train.py` betiğini çalıştırın:
+   ```
+   python Train.py
+   ```
+## Lisans
+
+Bu proje MIT Lisansı altında lisanslanmıştır. Detaylar için `LICENSE` dosyasına bakınız.
+
+## İletişim
+
+Sorularınız veya geri bildirimleriniz için lütfen bir Issue açın veya doğrudan proje sahibiyle iletişime geçin.

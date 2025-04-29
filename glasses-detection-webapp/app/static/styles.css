@@ -1,0 +1,427 @@
+:root {
+  --bg-color: #f8f9fa;
+  --text-color: #333;
+  --navbar-bg: #2c3e50;
+  --card-bg: white;
+  --card-shadow: rgba(0, 0, 0, 0.1);
+  --border-color: #cbd5e0;
+  --hover-bg: #f8f9fa;
+  --button-bg: #2c3e50;
+  --button-hover: #34495e;
+  --footer-bg: #f1f1f1;
+  --footer-color: #666;
+  --success-color: rgba(72, 187, 120, 0.9);
+  --delete-color: rgba(220, 53, 69, 0.8);
+  --delete-hover: rgba(220, 53, 69, 1);
+  --result-bg: #f8f9fa;
+  --glasses-detected: #48bb78;
+  --glasses-not-detected: #e53e3e;
+  --transition-time: 0.3s;
+}
+
+/* Reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--bg-color);
+  line-height: 1.6;
+  color: var(--text-color);
+  transition: background-color var(--transition-time) ease,
+    color var(--transition-time) ease;
+}
+
+body.dark-mode {
+  --bg-color: #121212;
+  --text-color: #e0e0e0;
+  --navbar-bg: #1a1a2e;
+  --card-bg: #1e1e30;
+  --card-shadow: rgba(0, 0, 0, 0.3);
+  --border-color: #2d3748;
+  --hover-bg: #2d3748;
+  --button-bg: #3a506b;
+  --button-hover: #4a6583;
+  --footer-bg: #1a1a2e;
+  --footer-color: #a0aec0;
+  --success-color: rgba(72, 187, 120, 0.7);
+  --delete-color: rgba(220, 53, 69, 0.7);
+  --delete-hover: rgba(220, 53, 69, 0.9);
+  --result-bg: #2d3748;
+  --glasses-detected: #38a169;
+  --glasses-not-detected: #c53030;
+}
+
+/* Navbar styles */
+.navbar {
+  background-color: var(--navbar-bg);
+  padding: 1rem 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background-color var(--transition-time) ease;
+  position: relative;
+}
+
+.nav-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between; /* Changed to space-between for dark mode toggle */
+  align-items: center;
+}
+
+.navbar h1 {
+  color: white;
+  font-size: 1.8rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Main container */
+.container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 20px;
+  transition: all var(--transition-time) ease;
+}
+
+/* Upload section */
+.upload-section {
+  background-color: var(--card-bg);
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 0 20px var(--card-shadow);
+  transition: background-color var(--transition-time) ease,
+    box-shadow var(--transition-time) ease;
+  animation: cardAppear 0.5s ease-out;
+}
+
+.file-upload {
+  margin-bottom: 1.5rem;
+}
+
+.upload-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 2rem;
+  border: 2px dashed var(--border-color);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.upload-label:hover {
+  border-color: var(--button-bg);
+  background-color: var(--hover-bg);
+  transform: translateY(-2px);
+}
+
+.upload-label::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.7s ease;
+}
+
+.upload-label:hover::before {
+  left: 100%;
+}
+
+.upload-label i {
+  font-size: 2.5rem;
+  color: #2c3e50;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+/* Button styles */
+.submit-btn {
+  width: 100%;
+  padding: 1rem;
+  background-color: #2c3e50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.submit-btn:hover {
+  background-color: #34495e;
+}
+
+/* Result section */
+.result-section {
+  margin-top: 2rem;
+  transition: all 0.3s ease;
+}
+
+.result-card {
+  background-color: var(--card-bg);
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 0 20px var(--card-shadow);
+  transition: all 0.3s ease;
+}
+
+.result-card h2 {
+  color: var(--text-color);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.result-text {
+  text-align: center;
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background-color: var(--result-bg);
+  color: var(--text-color);
+  border-radius: 6px;
+}
+
+.glasses-detected {
+  color: var(--glasses-detected);
+  font-weight: bold;
+}
+
+.glasses-not-detected {
+  color: var(--glasses-not-detected);
+  font-weight: bold;
+}
+
+.image-container {
+  text-align: center;
+}
+
+.image-container img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 2rem;
+  color: var(--footer-color);
+  background-color: var(--footer-bg);
+  margin-top: 3rem;
+  transition: background-color var(--transition-time) ease,
+    color var(--transition-time) ease;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.footer-links a {
+  color: var(--footer-color);
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: var(--button-bg);
+  transform: translateY(-3px);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .navbar h1 {
+    font-size: 1.5rem;
+  }
+
+  .container {
+    padding: 0 15px;
+  }
+
+  .upload-section,
+  .result-card {
+    padding: 1.5rem;
+  }
+}
+
+/* Image preview styles */
+.image-preview {
+  margin-top: 1rem;
+  text-align: center;
+  max-height: 300px;
+  overflow: hidden;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.image-preview img {
+  max-width: 100%;
+  max-height: 300px;
+  object-fit: contain;
+}
+
+/* Upload success message */
+.upload-success {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(72, 187, 120, 0.9);
+  color: white;
+  padding: 1rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  z-index: 100;
+}
+
+.upload-success i {
+  font-size: 1.2rem;
+}
+
+/* Utility classes */
+.hidden {
+  display: none !important;
+}
+
+/* Dark mode toggle */
+.theme-toggle {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.theme-toggle:hover {
+  transform: rotate(30deg);
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
+}
+
+/* Additional animation for elements that don't use translate */
+@keyframes simpleFadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease forwards;
+}
+
+.fade-out {
+  animation: fadeOut 0.3s ease forwards;
+}
+
+.image-preview.fade-out,
+.result-section.fade-out {
+  animation: simpleFadeOut 0.3s ease forwards;
+}
+
+/* Make upload section relative for absolute positioning of success message */
+.file-upload {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+/* Clear image button styles */
+.clear-image-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(220, 53, 69, 0.8);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.clear-image-btn:hover {
+  background-color: rgba(220, 53, 69, 1);
+  transform: scale(1.1);
+}
+
+/* Update image preview to handle the trash button positioning */
+.image-preview {
+  position: relative;
+  margin-top: 1rem;
+  text-align: center;
+  max-height: 300px;
+  overflow: hidden;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.image-preview img {
+  max-width: 100%;
+  max-height: 300px;
+  object-fit: contain;
+}

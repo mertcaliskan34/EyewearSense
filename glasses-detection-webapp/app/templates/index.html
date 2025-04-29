@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Glasses Detection App</title>
+    <meta name="description" content="Upload an image to detect if glasses are present in the photo.">
+    <!-- Add theme color for browser UI in mobile devices -->
+    <meta name="theme-color" content="#2c3e50">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <h1><i class="fas fa-glasses"></i> Glasses Detection</h1>
+            <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </nav>
+    
+    <main class="container">
+        <div class="upload-section">
+            <form action="/predict" method="post" enctype="multipart/form-data">
+                <div class="file-upload">
+                    <label for="image-upload" class="upload-label">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <span>Choose an image</span>
+                        <div id="upload-success" class="upload-success hidden">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Image loaded successfully!</span>
+                        </div>
+                    </label>
+                    <input id="image-upload" type="file" name="image" accept="image/*" required>
+                    <div id="image-preview" class="image-preview {% if not result %}hidden{% endif %}">
+                        <button type="button" id="clear-image" class="clear-image-btn">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                        <img id="preview-img" src="{% if result %}{{ url_for('static', filename=result_image) }}{% endif %}" alt="Preview">
+                    </div>
+                </div>
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-search"></i> Detect Glasses
+                </button>
+            </form>
+        </div>
+
+        {% if result is not none %}
+        <div class="result-section">
+            <div class="result-card">
+                <h2>Detection Result</h2>
+                <p class="result-text {% if 'Not Detected' in result %}glasses-not-detected{% else %}glasses-detected{% endif %}">{{ result }}</p>
+                <div class="image-container">
+                    <img src="{{ url_for('static', filename=result_image) }}" alt="Analyzed Image">
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Eyewear Glasses Detection App. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="https://github.com/mertcaliskan34/EyewearSense" aria-label="GitHub repository">
+                <i class="fab fa-github"></i>
+            </a>
+        </div>
+    </footer>
+    <script>
+        // Dark mode toggle functionality
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+        const icon = themeToggle.querySelector('i');
+        
+        // Check for saved theme preference or use preferred color scheme
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            body.classList.add('dark-mode');
+            icon.classList.replace('fa-moon', 'fa-sun');
+        }
+        
+        // Toggle theme when button is clicked
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            
+            // Update icon
+            if (body.classList.contains('dark-mode')) {
+                icon.classList.replace('fa-moon', 'fa-sun');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                icon.classList.replace('fa-sun', 'fa-moon');
+                localStorage.setItem('theme', 'light');
+            }
+            
+            // Add pulse animation to submit button
+            const submitBtn = document.querySelector('.submit-btn');
+            submitBtn.style.animation = 'pulse 0.5s';
+            setTimeout(() => {
+                submitBtn.style.animation = '';
+            }, 500);
+        });
+        
+        document.getElementById('image-upload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                // Show preview
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('preview-img').src = e.target.result;
+                    document.getElementById('image-preview').classList.remove('hidden');
+                    
+                    // Show success message with animation
+                    const successElement = document.getElementById('upload-success');
+                    successElement.classList.remove('hidden');
+                    successElement.classList.add('fade-in');
+                    
+                    // Hide success message after 3 seconds
+                    setTimeout(() => {
+                        successElement.classList.add('fade-out');
+                        setTimeout(() => {
+                            successElement.classList.add('hidden');
+                            successElement.classList.remove('fade-out');
+                        }, 500);
+                    }, 3000);
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Prevent form submission from clearing the preview if there's an error
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const fileInput = document.getElementById('image-upload');
+            if (!fileInput.files || !fileInput.files[0]) {
+                e.preventDefault();
+                alert('Please select an image first.');
+            } else {
+                // Add loading state to button when form is submitted
+                const submitBtn = this.querySelector('.submit-btn');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+                
+                // Reset button after 3 seconds if the form hasn't redirected yet
+                setTimeout(() => {
+                    if (document.body.contains(submitBtn)) {
+                        submitBtn.innerHTML = originalText;
+                    }
+                }, 3000);
+            }
+        });
+
+        // Update clear image functionality with smooth animation
+        document.getElementById('clear-image').addEventListener('click', function() {
+            // Add fade-out animation
+            const imagePreview = document.getElementById('image-preview');
+            imagePreview.classList.add('fade-out');
+            
+            // Wait for animation to complete before hiding
+            setTimeout(() => {
+                // Now make the API call to clear the image on the server
+                fetch('/clear_image', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Cache-Control': 'no-cache'
+                    },
+                    credentials: 'same-origin'
+                }).then(response => {
+                    if (response.ok) {
+                        // Clear the file input
+                        document.getElementById('image-upload').value = '';
+                        // Hide the preview
+                        imagePreview.classList.add('hidden');
+                        imagePreview.classList.remove('fade-out'); // Reset for next time
+                        // Reset the preview image source
+                        document.getElementById('preview-img').src = '';
+                        // Remove the result section if it exists
+                        const resultSection = document.querySelector('.result-section');
+                        if (resultSection) {
+                            resultSection.classList.add('fade-out');
+                            setTimeout(() => {
+                                resultSection.remove();
+                            }, 300); // Match animation duration
+                        }
+                    } else {
+                        console.error('Failed to delete image');
+                        // Revert animation if failed
+                        imagePreview.classList.remove('fade-out');
+                    }
+                }).catch(error => {
+                    console.error('Error:', error);
+                    // Revert animation if error
+                    imagePreview.classList.remove('fade-out');
+                });
+            }, 300); // Match animation duration from CSS
+        });
+    </script>
+    <!-- Include gallery script for recently analyzed images -->
+    <script src="{{ url_for('static', filename='gallery.js') }}"></script>
+</body>
+</html>
