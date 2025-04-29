@@ -73,7 +73,7 @@ Bu uygulamayı çalıştırmak için aşağıdaki bağımlılıkların yüklü o
 Proje, önceden eğitilmiş bir CNN modeli içermektedir. Kendi veri setinizle modeli yeniden eğitmek isterseniz:
 
 1. Veri setinizi hazırlayın (gözlüklü ve gözlüksüz kişilerin görüntüleri).
-2. `Train.py` betiğini çalıştırın:
+2. `train.py` betiğini çalıştırın:
    ```
    python Train.py
    ```
