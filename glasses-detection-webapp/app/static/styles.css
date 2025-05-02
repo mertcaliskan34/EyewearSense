@@ -16,6 +16,7 @@
   --result-bg: #f8f9fa;
   --glasses-detected: #48bb78;
   --glasses-not-detected: #e53e3e;
+  --sunglasses-detected: #ff8c00;
   --transition-time: 0.3s;
 }
 
@@ -53,6 +54,7 @@ body.dark-mode {
   --result-bg: #2d3748;
   --glasses-detected: #38a169;
   --glasses-not-detected: #c53030;
+  --sunglasses-detected: #ffa500;
 }
 
 /* Navbar styles */
@@ -186,19 +188,23 @@ input[type="file"] {
   border-radius: 10px;
   box-shadow: 0 0 20px var(--card-shadow);
   transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* gap removed, using margins instead */
 }
 
 .result-card h2 {
   color: var(--text-color);
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem; /* Increased margin */
   text-align: center;
 }
 
 .result-text {
   text-align: center;
   font-size: 1.2rem;
-  margin-bottom: 1.5rem;
-  padding: 1rem;
+  margin-bottom: 1rem; /* Refined space below text */
+  padding: 1.2rem; /* Increased padding */
   background-color: var(--result-bg);
   color: var(--text-color);
   border-radius: 6px;
@@ -207,15 +213,49 @@ input[type="file"] {
 .glasses-detected {
   color: var(--glasses-detected);
   font-weight: bold;
+  background-color: rgba(72, 187, 120, 0.1);
+  border: 2px solid var(--glasses-detected);
+  padding: 10px 15px;
+  border-radius: 5px;
+  display: inline-block;
+  animation: pulse-green 2s infinite;
+  margin-bottom: 1rem; /* Added margin */
 }
 
 .glasses-not-detected {
   color: var(--glasses-not-detected);
   font-weight: bold;
+  background-color: rgba(229, 62, 62, 0.1);
+  border: 2px solid var(--glasses-not-detected);
+  padding: 10px 15px;
+  border-radius: 5px;
+  display: inline-block;
+  animation: pulse-red 2s infinite;
+  margin-bottom: 1rem; /* Added margin */
+}
+
+.sunglasses-detected {
+  color: var(--sunglasses-detected);
+  font-weight: bold;
+  background-color: rgba(255, 140, 0, 0.1);
+  border: 2px solid var(--sunglasses-detected);
+  padding: 10px 15px;
+  border-radius: 5px;
+  display: inline-block;
+  animation: pulse-orange 2s infinite;
+  text-align: center;
+  margin: 0 auto 1rem auto; /* Added bottom margin */
+}
+
+body.dark-mode .sunglasses-detected {
+  background-color: rgba(255, 140, 0, 0.2);
+  color: var(--sunglasses-detected);
+  border-color: var(--sunglasses-detected);
 }
 
 .image-container {
   text-align: center;
+  margin-top: 1rem; /* Refined space above image */
 }
 
 .image-container img {
@@ -284,6 +324,42 @@ footer {
   max-width: 100%;
   max-height: 300px;
   object-fit: contain;
+}
+
+@keyframes pulse-green {
+  0% {
+    box-shadow: 0 0 0 0 rgba(72, 187, 120, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(72, 187, 120, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(72, 187, 120, 0);
+  }
+}
+
+@keyframes pulse-red {
+  0% {
+    box-shadow: 0 0 0 0 rgba(229, 62, 62, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(229, 62, 62, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(229, 62, 62, 0);
+  }
+}
+
+@keyframes pulse-orange {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 140, 0, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(255, 140, 0, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 140, 0, 0);
+  }
 }
 
 /* Upload success message */

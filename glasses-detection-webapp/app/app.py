@@ -8,11 +8,17 @@ import time
 
 app = Flask(__name__)
 
-# Modeli yükle
-model_path = os.path.join(os.path.dirname(__file__), 'model/glasses_cnn_model.h5')
-if not os.path.exists(model_path):
-    raise FileNotFoundError(f"Model dosyası bulunamadı: {model_path}")
-model = tf.keras.models.load_model(model_path)
+# Load glasses detection model
+glasses_model_path = os.path.join(os.path.dirname(__file__), 'model/glasses_cnn_model.h5')
+if not os.path.exists(glasses_model_path):
+    raise FileNotFoundError(f"Model file not found: {glasses_model_path}")
+glasses_model = tf.keras.models.load_model(glasses_model_path)
+
+# Load sunglasses classifier model
+sunglasses_model_path = os.path.join(os.path.dirname(__file__), 'model/glasses_type_classifier.h5')
+if not os.path.exists(sunglasses_model_path):
+    raise FileNotFoundError(f"Model file not found: {sunglasses_model_path}")   
+sunglasses_model = tf.keras.models.load_model(sunglasses_model_path)
 
 # Define the upload folder path
 UPLOAD_FOLDER = os.path.join(app.static_folder, 'uploads')
@@ -44,9 +50,23 @@ def predict():
             img_array = img_to_array(img) / 255.0
             img_array = img_array.reshape((1, 128, 128, 3))
 
-            # Model prediction
-            prediction = model.predict(img_array)
-            result = "Glasses Detected" if prediction[0][0] < 0.5 else "Glasses Not Detected"
+            # First model prediction - detect if glasses are present
+            glasses_prediction = glasses_model.predict(img_array)
+            glasses_detected = glasses_prediction[0][0] < 0.5
+            
+            # Initialize result
+            result = "Glasses Not Detected"
+            
+            # If glasses are detected, check if they are sunglasses
+            if glasses_detected:
+                # Second model prediction - classify glasses type
+                sunglasses_prediction = sunglasses_model.predict(img_array)
+                is_sunglasses = sunglasses_prediction[0][0] >= 0.5  # Assuming model outputs probability of being sunglasses
+                
+                if is_sunglasses:
+                    result = "Sunglasses Detected"
+                else:
+                    result = "Glasses Detected"
 
             # Construct the image URL relative to the static folder
             result_image_url = f'uploads/{filename}'

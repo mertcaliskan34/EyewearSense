@@ -50,7 +50,7 @@
         <div class="result-section">
             <div class="result-card">
                 <h2>Detection Result</h2>
-                <p class="result-text {% if 'Not Detected' in result %}glasses-not-detected{% else %}glasses-detected{% endif %}">{{ result }}</p>
+                <p class="result-text {% if 'Not Detected' in result %}glasses-not-detected{% elif 'Sunglasses Detected' in result %}sunglasses-detected{% else %}glasses-detected{% endif %}">{{ result }}</p>
                 <div class="image-container">
                     <img src="{{ url_for('static', filename=result_image) }}" alt="Analyzed Image">
                 </div>

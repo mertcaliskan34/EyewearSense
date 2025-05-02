@@ -100,9 +100,14 @@ document.addEventListener("DOMContentLoaded", function () {
       const imageId = new Date().getTime();
 
       // Get proper CSS class based on result text
-      const resultClass = currentResult.includes("Not Detected")
-        ? "glasses-not-detected" // Assign red class if "Not Detected" is present
-        : "glasses-detected"; // Otherwise, assume it's detected and assign green class
+      let resultClass;
+      if (currentResult.includes("Not Detected")) {
+        resultClass = "glasses-not-detected"; // Assign red class if "Not Detected" is present
+      } else if (currentResult.includes("Sunglasses Detected")) {
+        resultClass = "sunglasses-detected"; // Assign orange class for sunglasses
+      } else {
+        resultClass = "glasses-detected"; // Otherwise, assume it's regular glasses and assign green class
+      }
 
       // Add new item to beginning of array
       savedImages.unshift({
@@ -253,17 +258,25 @@ document.addEventListener("DOMContentLoaded", function () {
             
             .gallery-info {
                 padding: 0.75rem;
+                display: flex;
+                flex-direction: column;
+                height: 100px; /* Increased height */
+                justify-content: space-between;
             }
             
             .gallery-info p {
-                margin: 0 0 0.5rem 0;
+                margin: 0 0 0.5rem 0; /* Added bottom margin */
                 font-size: 0.9rem;
                 font-weight: bold;
+                text-align: center;
             }
             
             .gallery-date {
                 font-size: 0.8rem;
                 color: var(--footer-color);
+                display: block;
+                text-align: center;
+                margin-top: auto;
             }
             
             .remove-item {
