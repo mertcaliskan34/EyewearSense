@@ -9,24 +9,13 @@
 
 </div>
 
-## 📋 İçerik
-- [Proje Hakkında](#proje-hakkında)
-- [Özellikler](#özellikler)
-- [Teknolojiler](#teknolojiler)
-- [Kurulum](#kurulum)
-- [Kullanım](#kullanım)
-- [Model Eğitimi](#model-eğitimi)
-- [Katkıda Bulunma](#katkıda-bulunma)
-- [Lisans](#lisans)
-- [İletişim](#iletişim)
-
 ## 🎯 Proje Hakkında
 
-EyewearSense, derin öğrenme teknolojilerini kullanarak görüntülerdeki gözlük varlığını tespit eden modern bir web uygulamasıdır. Evrişimli Sinir Ağı (CNN) modelimiz, yüklenen fotoğraflarda gözlük takılıp takılmadığını yüksek doğrulukla analiz edebilmektedir.
+EyewearSense, derin öğrenme teknolojilerini kullanarak görüntülerdeki gözlük varlığını ve türünü tespit eden modern bir web uygulamasıdır. Evrişimli Sinir Ağı (CNN) modelimiz, yüklenen fotoğraflarda gözlük takılıp takılmadığını ve türünü yüksek doğrulukla analiz edebilmektedir.
 
 ## ✨ Özellikler
 
-- 🔍 Hızlı ve doğru gözlük tespiti
+- 🔍 Hızlı ve doğru gözlük ve gözlük türü tespiti
 - 📱 Responsive ve kullanıcı dostu arayüz
 - 🖼️ Anlık görüntü yükleme ve işleme
 - 📊 Sonuçların görsel sunumu
@@ -78,11 +67,11 @@ python app.py
 ```
 
 2. Web tarayıcınızda `http://127.0.0.1:5001` adresine gidin
-3. "Görüntü Yükle" butonunu kullanarak bir fotoğraf seçin
-4. "Gözlük Tespiti Yap" butonuna tıklayarak sonucu görüntüleyin
+3. "Choose an image" butonunu kullanarak bir fotoğraf seçin
+4. "Detect Glasses" butonuna tıklayarak sonucu görüntüleyin
 
 - Ana sayfadaki form aracılığıyla bir görüntü yükleyin.
-- Uygulama görüntüyü işleyecek ve gözlük tespit edilip edilmediğini gösterecektir.
+- Uygulama görüntüyü işleyecek ve gözlük tespit edilip edilmediğini ve edilirse türünü gösterecektir.
 - Sonuçlar, görüntünün işlenmesinden sonra kullanıcı dostu bir arayüzle sunulacaktır.
 
 ## 🧠 Model Eğitimi
@@ -103,22 +92,5 @@ dataset/
 2. Modeli eğitin:
 ```bash
 python train.py
+python train_sunglasses.py
 ```
-
-## 🤝 Katkıda Bulunma
-
-1. Bu repository'yi fork edin
-2. Feature branch'i oluşturun (`git checkout -b feature/AmazingFeature`)
-3. Değişikliklerinizi commit edin (`git commit -m 'Add some AmazingFeature'`)
-4. Branch'inize push edin (`git push origin feature/AmazingFeature`)
-5. Pull Request oluşturun
-
-## 📝 Lisans
-
-Bu proje MIT lisansı altında lisanslanmıştır. Detaylı bilgi için [`LICENSE`](LICENSE) dosyasını inceleyebilirsiniz.
-
-## 📞 İletişim
-
-- Mert Çalışkan - [GitHub](https://github.com/mertcaliskan34)
-
-Proje Linki: [https://github.com/username/EyewearSense](https://github.com/username/EyewearSense)
