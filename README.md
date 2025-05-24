@@ -1,12 +1,45 @@
-# EyewearSense Gözlük Tespit Web Uygulaması
+# EyewearSense: Gözlük Tespit Web Uygulaması
 
-Bu proje, yüklenen bir görüntüde kişinin gözlük takıp takmadığını tespit etmek için eğitilmiş bir evrişimli sinir ağı (CNN) modeli kullanan bir web uygulamasıdır. Uygulama Flask kullanılarak geliştirilmiş olup, görüntü yüklemeleri ve sonuçların gösterimi için kullanıcı dostu bir arayüz sunmaktadır.
+<div align="center">
 
-## Proje Hakkında
+![Python](https://img.shields.io/badge/python-v3.6+-blue.svg)
+![Flask](https://img.shields.io/badge/flask-v2.0+-blue.svg)
+![TensorFlow](https://img.shields.io/badge/tensorflow-v2.0+-blue.svg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
 
-Görüntü işleme teknikleri ve derin öğrenme modellerinin pratik bir uygulaması olan bu proje, kişilerin gözlük takıp takmadığını otomatik olarak tespit edebilmektedir. Eğitilmiş CNN modeli, yüklenen görüntüleri analiz ederek yüksek doğrulukla sonuç üretmektedir.
+</div>
 
-## Gereksinimler
+## 📋 İçerik
+- [Proje Hakkında](#proje-hakkında)
+- [Özellikler](#özellikler)
+- [Teknolojiler](#teknolojiler)
+- [Kurulum](#kurulum)
+- [Kullanım](#kullanım)
+- [Model Eğitimi](#model-eğitimi)
+- [Katkıda Bulunma](#katkıda-bulunma)
+- [Lisans](#lisans)
+- [İletişim](#iletişim)
+
+## 🎯 Proje Hakkında
+
+EyewearSense, derin öğrenme teknolojilerini kullanarak görüntülerdeki gözlük varlığını tespit eden modern bir web uygulamasıdır. Evrişimli Sinir Ağı (CNN) modelimiz, yüklenen fotoğraflarda gözlük takılıp takılmadığını yüksek doğrulukla analiz edebilmektedir.
+
+## ✨ Özellikler
+
+- 🔍 Hızlı ve doğru gözlük tespiti
+- 📱 Responsive ve kullanıcı dostu arayüz
+- 🖼️ Anlık görüntü yükleme ve işleme
+- 📊 Sonuçların görsel sunumu
+- 💾 Son analiz edilen görüntülerin galeri görünümü
+
+## 🛠️ Teknolojiler
+
+- **Backend:** Python, Flask
+- **Deep Learning:** TensorFlow, OpenCV
+- **Frontend:** HTML5, CSS3, JavaScript
+- **Veri İşleme:** NumPy, Pandas
+
+## ⚙️ Gereksinimler
 
 Bu uygulamayı çalıştırmak için aşağıdaki bağımlılıkların yüklü olması gerekmektedir:
 
@@ -17,50 +50,75 @@ Bu uygulamayı çalıştırmak için aşağıdaki bağımlılıkların yüklü o
 - OpenCV
 - `requirements.txt` dosyasında listelenen diğer gerekli kütüphaneler
 
-## Kurulum
+## ⚙️ Kurulum
 
-1. Depoyu klonlayın:
-   ```
-   git clone <depo-url>
-   cd glasses-detection-webapp
-   ```
+1. Projeyi klonlayın:
+```bash
+git clone https://github.com/username/EyewearSense.git
+cd EyewearSense
+```
 
-2. Gerekli paketleri yükleyin:
-   ```
-   pip install -r requirements.txt
-   ```
+2. Sanal ortam oluşturun ve aktifleştirin:
+```bash
+python -m venv eyewear_env
+eyewear_env\Scripts\activate     # Windows için
+```
 
-## Uygulamayı Çalıştırma
+3. Gerekli paketleri yükleyin:
+```bash
+pip install -r requirements.txt
+```
 
-1. `app` dizinine gidin:
-   ```
-   cd app
-   ```
+## 🚀 Kullanım
 
-2. Uygulamayı çalıştırın:
-   ```
-   python app.py
-   ```
+1. Uygulamayı başlatın:
+```bash
+cd glasses-detection-webapp/app
+python app.py
+```
 
-3. Web tarayıcınızı açın ve uygulamaya erişmek için `http://127.0.0.1:5001` adresine gidin.
-
-## Kullanım
+2. Web tarayıcınızda `http://127.0.0.1:5001` adresine gidin
+3. "Görüntü Yükle" butonunu kullanarak bir fotoğraf seçin
+4. "Gözlük Tespiti Yap" butonuna tıklayarak sonucu görüntüleyin
 
 - Ana sayfadaki form aracılığıyla bir görüntü yükleyin.
 - Uygulama görüntüyü işleyecek ve gözlük tespit edilip edilmediğini gösterecektir.
 - Sonuçlar, görüntünün işlenmesinden sonra kullanıcı dostu bir arayüzle sunulacaktır.
 
-## Model Eğitimi
+## 🧠 Model Eğitimi
 
-Proje, önceden eğitilmiş bir CNN modeli içermektedir. Kendi veri setinizle modeli yeniden eğitmek isterseniz:
+Kendi veri setinizle modeli eğitmek için:
 
-1. Veri setinizi hazırlayın (gözlüklü ve gözlüksüz kişilerin görüntüleri).
-2. `train.py` betiğini çalıştırın:
+1. Veri setinizi hazırlayın:
+```
+dataset/
+├── train/
+│   ├── glasses/
+│   └── no_glasses/
+└── val/
+    ├── glasses/
+    └── no_glasses/
+```
 
-   ```
-   python train.py
-   ```
+2. Modeli eğitin:
+```bash
+python train.py
+```
 
-## İletişim
+## 🤝 Katkıda Bulunma
 
-Sorularınız veya geri bildirimleriniz için lütfen bir Issue açın veya doğrudan proje sahibiyle iletişime geçin.
+1. Bu repository'yi fork edin
+2. Feature branch'i oluşturun (`git checkout -b feature/AmazingFeature`)
+3. Değişikliklerinizi commit edin (`git commit -m 'Add some AmazingFeature'`)
+4. Branch'inize push edin (`git push origin feature/AmazingFeature`)
+5. Pull Request oluşturun
+
+## 📝 Lisans
+
+Bu proje MIT lisansı altında lisanslanmıştır. Detaylı bilgi için [`LICENSE`](LICENSE) dosyasını inceleyebilirsiniz.
+
+## 📞 İletişim
+
+- Mert Çalışkan - [GitHub](https://github.com/mertcaliskan34)
+
+Proje Linki: [https://github.com/username/EyewearSense](https://github.com/username/EyewearSense)
