@@ -3,3 +3,7 @@ img
 test.py
 test2.py
 data
+eyewear_env
+img_align_celeba
+glasses-detection-webapp/app/static/uploads
+__pycache__
