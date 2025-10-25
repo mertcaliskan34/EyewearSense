@@ -39,20 +39,21 @@
 ## Key Features
 
 ### **Advanced Detection Capabilities**
-- **Binary Classification**: Accurate glasses/no-glasses detection
-- **Multi-Class Classification**: Distinguishes between different glasses types (regular, sunglasses)
-- **Real-time Processing**: Sub-second inference times
+- **Two-Stage Detection System**: Primary model detects glasses presence, secondary model classifies type
+- **Multi-Class Classification**: Distinguishes between regular glasses, sunglasses, and no glasses
+- **Real-time Processing**: Sub-second inference times with dual-model architecture
 - **High Accuracy**: 95%+ precision on diverse image datasets
 
 ### **User Experience**
-- **Responsive Design**: Modern, mobile-friendly interface
-- **Drag & Drop Upload**: Intuitive image upload system
-- **Visual Feedback**: Real-time processing indicators
-- **Gallery View**: History of analyzed images
-- **Confidence Scores**: Transparent AI decision-making
+- **Responsive Design**: Modern, mobile-friendly interface with dark mode support
+- **Drag & Drop Upload**: Intuitive image upload system with preview functionality
+- **Visual Feedback**: Real-time processing indicators with smooth animations
+- **Gallery View**: History of analyzed images with persistent storage
+- **Interactive UI**: Dark/light theme toggle and animated transitions
 
 ### **Technical Excellence**
-- **Optimized Models**: Lightweight CNN for fast inference
+- **Dual-Model Architecture**: Separate models for detection and classification
+- **Optimized Models**: Lightweight CNNs for fast inference
 - **Image Preprocessing**: Advanced normalization and augmentation
 - **Error Handling**: Robust error management and user feedback
 - **Scalable Architecture**: Modular design for easy maintenance
@@ -63,14 +64,19 @@
 graph TB
     A[User Interface] --> B[Flask Web Server]
     B --> C[Image Preprocessing]
-    C --> D[CNN Model Inference]
-    D --> E[Post-processing]
-    E --> F[Results Display]
+    C --> D[Primary CNN Model]
+    D --> E{Glasses Detected?}
+    E -->|Yes| F[Secondary CNN Model]
+    E -->|No| G[No Glasses Result]
+    F --> H[Glasses Type Classification]
+    H --> I[Final Result Display]
+    G --> I
     
-    G[Training Pipeline] --> H[Data Augmentation]
-    H --> I[Model Training]
-    I --> J[Model Validation]
-    J --> K[Model Deployment]
+    J[Training Pipeline] --> K[Data Augmentation]
+    K --> L[Primary Model Training]
+    L --> M[Secondary Model Training]
+    M --> N[Model Validation]
+    N --> O[Model Deployment]
 ```
 
 ### **System Components**
@@ -165,16 +171,17 @@ Open your browser and navigate to `http://127.0.0.1:5001`
 
 ### **API Endpoints**
 ```python
-POST /upload          # Upload and analyze image
-GET  /gallery         # Retrieve analysis history
-GET  /health          # System health check
+POST /predict         # Upload and analyze image
+POST /clear_image     # Clear uploaded images
+GET  /                # Main application interface
 ```
 
 ## Model Training & Performance
 
 ### **Dataset Information**
+- **Primary Model**: Binary classification (Glasses vs No Glasses)
+- **Secondary Model**: Binary classification (Regular Glasses vs Sunglasses)
 - **Source**: Custom dataset with 10,000+ labeled images
-- **Classes**: Glasses, No Glasses, Sunglasses
 - **Split**: 80% training, 20% validation
 - **Augmentation**: Rotation, brightness, contrast variations
 
@@ -212,50 +219,44 @@ Non-trainable params: 0
 
 ### **Training Process**
 ```bash
-# Train the main glasses detection model
+# Train the primary glasses detection model
 python train.py
 
-# Train the sunglasses classification model
+# Train the secondary sunglasses classification model
 python train_sunglasses.py
 
 # Evaluate model performance
 python test.py
 ```
 
+### **Model Files**
+- `glasses_cnn_model.h5` - Primary model for glasses detection
+- `glasses_type_classifier.h5` - Secondary model for glasses type classification
+
 ## API Documentation
 
 ### **Upload and Analyze Image**
 ```http
-POST /upload
+POST /predict
 Content-Type: multipart/form-data
 
 Parameters:
 - image: File (required) - Image file to analyze
 
 Response:
-{
-    "success": true,
-    "prediction": "glasses",
-    "confidence": 0.95,
-    "processing_time": "0.15s",
-    "image_path": "/uploads/processed_image.jpg"
-}
+- Renders HTML template with result
+- Possible results: "Glasses Not Detected", "Glasses Detected", "Sunglasses Detected"
+- Displays analyzed image with result
 ```
 
-### **Get Analysis History**
+### **Clear Uploaded Images**
 ```http
-GET /gallery
+POST /clear_image
+Content-Type: application/json
 
 Response:
 {
-    "images": [
-        {
-            "filename": "image1.jpg",
-            "prediction": "glasses",
-            "confidence": 0.95,
-            "timestamp": "2024-01-15T10:30:00Z"
-        }
-    ]
+    "status": "success"
 }
 ```
 
