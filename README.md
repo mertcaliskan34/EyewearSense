@@ -183,18 +183,18 @@ GET  /health          # System health check
 # Custom CNN Architecture
 Model: "sequential"
 _________________________________________________________________
-Layer (type)                 Output Shape              Param #   
+Layer (type)                   Output Shape              Param #   
 =================================================================
-conv2d (Conv2D)              (None, 64, 64, 32)        896       
-max_pooling2d (MaxPooling2D) (None, 32, 32, 32)        0         
-conv2d_1 (Conv2D)            (None, 32, 32, 64)        18496     
-max_pooling2d_1 (MaxPooling2D) (None, 16, 16, 64)      0         
-conv2d_2 (Conv2D)            (None, 16, 16, 128)       73856     
-max_pooling2d_2 (MaxPooling2D) (None, 8, 8, 128)       0         
-flatten (Flatten)            (None, 8192)              0         
-dense (Dense)                (None, 512)               4194816   
-dropout (Dropout)            (None, 512)               0         
-dense_1 (Dense)              (None, 3)                 1539      
+conv2d (Conv2D)                (None, 64, 64, 32)        896       
+max_pooling2d (MaxPooling2D)   (None, 32, 32, 32)        0         
+conv2d_1 (Conv2D)              (None, 32, 32, 64)        18496     
+max_pooling2d_1 (MaxPooling2D) (None, 16, 16, 64)        0         
+conv2d_2 (Conv2D)              (None, 16, 16, 128)       73856     
+max_pooling2d_2 (MaxPooling2D) (None, 8, 8, 128)         0         
+flatten (Flatten)              (None, 8192)              0         
+dense (Dense)                  (None, 512)               4194816   
+dropout (Dropout)              (None, 512)               0         
+dense_1 (Dense)                (None, 3)                 1539      
 =================================================================
 Total params: 4,290,603
 Trainable params: 4,290,603
