@@ -23,9 +23,7 @@
 - [Usage Guide](#usage-guide)
 - [Model Training & Performance](#model-training--performance)
 - [API Documentation](#api-documentation)
-- [Contributing](#contributing)
 - [License](#license)
-- [Contact](#contact)
 
 ## Project Overview
 
